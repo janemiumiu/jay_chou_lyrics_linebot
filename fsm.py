@@ -263,7 +263,7 @@ class TocMachine(GraphMachine):
     
     def on_enter_recommand_song(self, event):
         reply_token = event.reply_token
-        send_text_message(reply_token,"\n輸入:返回 回initial\n輸入:專輯名稱 會依據專輯推薦歌曲\n輸入:隨機挑選 會隨機挑選歌曲")
+        send_text_message(reply_token,"輸入:返回\n輸入:專輯名稱 會依據專輯推薦歌曲\n輸入:隨機 會隨機挑選歌曲")
     
     def on_enter_recommand_song_by_album(self, event):
         reply_token = event.reply_token
