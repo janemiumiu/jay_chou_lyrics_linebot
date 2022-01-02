@@ -1,8 +1,10 @@
 #coding:utf-8
 import re
 from transitions.extensions import GraphMachine
+from utils import send_button_message
 from utils import send_text_message
 import random
+from linebot.models import MessageEvent, TextMessage, TextSendMessage ,TemplateSendMessage,ButtonsTemplate,MessageTemplateAction
 album_and_song_dict={"Jay":["可愛女人","完美主義","星晴","娘子","鬥牛","黑色幽默","伊斯坦堡","印第安老斑鳩","龍捲風","反方向的鐘"],"范特西":["愛在西元前","爸 我回來了","簡單愛","忍者","開不了口","上海 一九四三","對不起","威廉古堡","雙節棍","安靜"],"八度空間":["半獸人","半島鐵盒","暗號","龍拳","火車叨位去","分裂","爺爺泡的茶","回到過去","米蘭的小鐵匠","最後的戰役"],"葉惠美":["以父之名","懦夫","晴天","三年二班","東風破","妳聽得到","同一種調調","她的睫毛","愛情懸崖","梯田","雙刀"],"七里香":["我的地盤","七里香","藉口","外婆","將軍","擱淺","亂舞春秋","困獸之鬥","園遊會","止戰之殤"],"11月的蕭邦":["夜曲","藍色風暴","髮如雪","黑色毛衣","四面楚歌","楓","浪漫手機","逆鱗","麥芽糖","珊瑚海","飄移","一路向北"],"依然范特西":["夜的第七章","聽媽媽的話","千里之外","本草綱目","退後","紅模仿","心雨","白色風車","迷迭香","菊花台","霍元甲"],"我很忙":["牛仔很忙","彩虹","青花瓷","陽光宅男","蒲公英的約定","無雙","我不配","扯","甜甜的","最長的電影"],"魔杰座":["龍戰騎士","給我一首歌的時間","蛇舞","花海","魔術先生","說好的幸福呢","蘭亭序","流浪詩人","時光機","喬克叔叔","稻香"],"跨時代":["跨時代","說了再見","煙花易冷","免費教學錄影帶","好久不見","雨下一整晚","嘻哈空姐","我落淚情緒零碎","愛的飛行日記","自導自演","超人不會飛"],"驚嘆號":["驚嘆號","迷魂曲","Mine Mine","公主病","你好嗎","療傷燒肉粽","琴傷","水手怕水","世界未末日","皮影戲","超跑女神"],"12新作":["四季列車","手語","公公偏頭痛","明明就","傻笑","比較大的大提琴","愛你沒差","紅塵客棧","夢想啟動","大笨鐘","哪裡都是你","烏克麗麗"],"哎呦，不錯喔":["陽明山","竊愛","算什麼男人","天涯過客","怎麼了","一口氣全唸對","我要夏天","手寫的從前","鞋子特大號","聽爸爸的話","美人魚","聽見下雨的聲音"],"周杰倫的床邊故事":["床邊故事","說走就走","一點點","前世情人","英雄","不該","土耳其冰淇淋","告白氣球","Now You See Me","愛情廢柴"],"范特西Plus":["蝸牛","你比從前快樂","世界末日"],"尋找周杰倫 EP":["軌跡","斷了的弦"],"霍元甲 EP":["霍元甲","獻世"],"黃金甲 EP":["黃金甲"]}
 album_list=["Jay","范特西","八度空間","葉惠美","七里香","11月的蕭邦","依然范特西","我很忙","魔杰座","跨時代","驚嘆號","12新作","哎呦，不錯喔","周杰倫的床邊故事","范特西Plus","尋找周杰倫 EP","霍元甲 EP","黃金甲 EP"]
 def is_song_exist(search_song):
@@ -199,10 +201,16 @@ class TocMachine(GraphMachine):
     def on_enter_search_album_by_song(self, event):
         #print("I'm entering state1")
         reply_token = event.reply_token
-        text =find_album_by_song_name(self.song_reg)
-        self.album_reg=text
-        send_text_message(reply_token,text+"\n輸入:介紹專輯 就會介紹本專輯\n輸入:介紹專輯裡的其他首歌 就會介紹專輯裡的其他首歌")
-
+        text1 =find_album_by_song_name(self.song_reg)
+        self.album_reg=text1
+        #send_text_message(reply_token,text+"\n輸入:介紹專輯 就會介紹本專輯\n輸入:介紹專輯裡的其他首歌 就會介紹專輯裡的其他首歌")
+        title = text1
+        text =" "
+        btn = [
+            MessageTemplateAction(label="介紹專輯",text="介紹專輯"),
+            MessageTemplateAction(label="介紹專輯裡的其他首歌",text="介紹專輯裡的其他首歌")]
+        
+        send_button_message(event.reply_token,title,text,btn)
     def on_enter_intro_album(self, event):
         reply_token = event.reply_token
         text = album_introdution(self.album_reg)
