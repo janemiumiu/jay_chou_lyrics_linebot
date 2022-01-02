@@ -12,7 +12,7 @@ def send_text_message(reply_token, text):
     line_bot_api.reply_message(reply_token, TextSendMessage(text=text))
 
     return "OK"
-def send_button_message(reply_token, title, text, btn):
+def send_button_message(reply_token, title, text, btn,url):
     line_bot_api = LineBotApi(channel_access_token)
     message = TemplateSendMessage(
         alt_text='button template',
@@ -20,7 +20,7 @@ def send_button_message(reply_token, title, text, btn):
             title = title,
             text = text,
             actions = btn,
-            thumbnail_image_url="https://images.twgreatdaily.com/images/elastic/_Lt/_LtEPm0BJleJMoPMU-4-.jpg"
+            thumbnail_image_url=url
         )
     )
     line_bot_api.reply_message(reply_token, message)

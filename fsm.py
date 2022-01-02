@@ -115,6 +115,44 @@ def recommand_song_by_album(album):
     else :
         message ="查無此專輯，請重新輸入！" 
     return message   
+def search_url(album):
+    if album == "Jay":
+        message = "https://cdn.shopify.com/s/files/1/1283/2797/products/500x500-3_580x.jpg?v=1465703750"
+    elif album =="范特西":
+        message = "https://upload.wikimedia.org/wikipedia/zh/8/87/Jay_2001_ablum_cover.jpg"
+    elif album =="八度空間":
+        message="https://upload.wikimedia.org/wikipedia/zh/thumb/4/4e/Jay_2002_ablum_cover.jpg/220px-Jay_2002_ablum_cover.jpg"
+    elif album =="葉惠美":
+        message="https://upload.wikimedia.org/wikipedia/zh/thumb/4/48/Jay_2003_ablum_cover.jpg/220px-Jay_2003_ablum_cover.jpg"
+    elif album =="七里香":
+        message="https://upload.wikimedia.org/wikipedia/zh/thumb/b/bc/Jay_Chou-Common_Jasmin_Orange_2004_Cover.jpg/220px-Jay_Chou-Common_Jasmin_Orange_2004_Cover.jpg"
+    elif album =="11月的蕭邦":
+        message = "https://upload.wikimedia.org/wikipedia/zh/9/93/Jay_chopin_cover270.jpg"
+    elif album == "依然范特西":
+        message ="https://upload.wikimedia.org/wikipedia/zh/e/ea/Jay_Chow_Still_Fantasy_CDCover.jpg"
+    elif album =="我很忙":
+        message = "https://upload.wikimedia.org/wikipedia/zh/thumb/1/12/Jay_Chou_on_the_run.jpg/220px-Jay_Chou_on_the_run.jpg"
+    elif album =="魔杰座":
+        message = "https://upload.wikimedia.org/wikipedia/zh/thumb/c/cb/Capricorn_%28album%29_cover2.jpg/220px-Capricorn_%28album%29_cover2.jpg"
+    elif album =="跨時代":
+        message ="https://i.kfs.io/album/global/147597,1v1/fit/500x500.jpg"
+    elif album =="驚嘆號":
+        message="https://i.kfs.io/album/tw/308575,0v3/fit/500x500.jpg"
+    elif album =="12新作":
+        message ="https://i.kfs.io/album/tw/525523,1v3/fit/500x500.jpg"
+    elif album=="哎呦，不錯哦":
+        message ="https://img.discogs.com/0XOHISwq1hyEjb5pA7bT-Csrnd8=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-16375869-1607364480-8589.jpeg.jpg"
+    elif album =="周杰倫的床邊故事":
+        message ="https://upload.wikimedia.org/wikipedia/zh/b/b2/JayChouBedtimeStories-2016_Cover.jpg"
+    elif album =="范特西Plus":
+        message ="https://img.discogs.com/4OQLK7bq4ttOpGlCd2dknwQQYG4=/fit-in/559x480/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-3837633-1346363791-8939.jpeg.jpg"
+    elif album =="尋找周杰倫 EP":
+        message ="https://i.kfs.io/album/tw/47735,0v3/fit/500x500.jpg"
+    elif album =="霍元甲 EP":
+        message ="https://upload.wikimedia.org/wikipedia/zh/4/4a/Fearless_Jay_Chou.jpg"
+    elif album =="黃金甲 EP":
+        message ="https://upload.wikimedia.org/wikipedia/zh/thumb/7/7d/Curse_of_the_Golden_Flower_EP_Cover.jpg/220px-Curse_of_the_Golden_Flower_EP_Cover.jpg"
+    return message
 def random_song_choose():
     p = random.randint(1,18)
     if p ==1:
@@ -204,13 +242,14 @@ class TocMachine(GraphMachine):
         text1 =find_album_by_song_name(self.song_reg)
         self.album_reg=text1
         #send_text_message(reply_token,text+"\n輸入:介紹專輯 就會介紹本專輯\n輸入:介紹專輯裡的其他首歌 就會介紹專輯裡的其他首歌")
+        url=search_url(self.album_reg)
         title = text1
         text =" "
         btn = [
             MessageTemplateAction(label="介紹專輯",text="介紹專輯"),
-            MessageTemplateAction(label="介紹專輯裡的其他首歌",text="介紹專輯裡的其他首歌")]
+            MessageTemplateAction(label="介紹專輯裡的其他首歌",text="專輯裡的其他首歌")]
         
-        send_button_message(event.reply_token,title,text,btn)
+        send_button_message(event.reply_token,title,text,btn,url)
     def on_enter_intro_album(self, event):
         reply_token = event.reply_token
         text = album_introdution(self.album_reg)
