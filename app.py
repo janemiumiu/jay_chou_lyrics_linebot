@@ -14,23 +14,57 @@ load_dotenv()
 
 
 machine = TocMachine(
-    states=["user", "state1", "state2"],
+    states=["initial", "search_album_by_song", "intro_album","indtro_album_other_song","recommand_song","recommand_song_by_album","random_collect_song","about_jay"],
     transitions=[
         {
             "trigger": "advance",
-            "source": "user",
-            "dest": "state1",
-            "conditions": "is_going_to_state1",
+            "source": "initial",
+            "dest": "search_album_by_song",
+            "conditions": "is_going_to_search_album_by_song",
         },
         {
             "trigger": "advance",
-            "source": "user",
-            "dest": "state2",
-            "conditions": "is_going_to_state2",
+            "source": "search_album_by_song",
+            "dest": "intro_album",
+            "conditions": "is_going_to_intro_album",
         },
-        {"trigger": "go_back", "source": ["state1", "state2"], "dest": "user"},
+        {
+            "trigger": "advance",
+            "source": "search_album_by_song",
+            "dest": "indtro_album_other_song",
+            "conditions": "is_going_to_indtro_album_other_song",
+        },
+        {
+            "trigger": "advance",
+            "source": "initial",
+            "dest": "recommand_song",
+            "conditions": "is_going_to_recommand_song",
+        },
+        {
+            "trigger": "advance",
+            "source": "recommand_song",
+            "dest": "recommand_song_by_album",
+            "conditions": "is_going_to_recommand_song_by_album",
+        },
+        {
+            "trigger": "advance",
+            "source": "recommand_song",
+            "dest": "random_collect_song",
+            "conditions": "is_going_to_random_collect_song",
+        },
+        {
+            "trigger": "advance",
+            "source": "initial",
+            "dest": "about_jay",
+            "conditions": "is_going_to_about_jay",
+        },
+        {"trigger": "advance",
+         "source": ["search_album_by_song", "intro_album","indtro_album_other_song","recommand_song","recommand_song_by_album","random_collect_song","about_jay"], 
+        "dest": "initial",
+        "conditions":"is_going_to_initial"
+        }
     ],
-    initial="user",
+    initial="initial",
     auto_transitions=False,
     show_conditions=True,
 )
@@ -104,7 +138,25 @@ def webhook_handler():
         print(f"REQUEST BODY: \n{body}")
         response = machine.advance(event)
         if response == False:
-            send_text_message(event.reply_token, "Not Entering any State")
+            if machine.state=="initial":
+                send_text_message(event.reply_token, "請輸入正確的關鍵字！歌名 或是 “推薦歌曲” 或是 ”關於周杰倫“")
+            
+            if machine.state=="search_album_by_song":
+                send_text_message(event.reply_token, "請輸入正確的關鍵字！“介紹專輯” 或是 ”專輯裡的其他首歌“")
+
+            if machine.state=="intro_album":
+                send_text_message(event.reply_token, "查無專輯！")
+
+            if machine.state=="indtro_album_other_song":
+                send_text_message(event.reply_token, "查無專輯！")
+            
+            if machine.state=="recommand_song":
+                send_text_message(event.reply_token, "請輸入正確的關鍵字！專輯名稱 或是 “隨機“")
+            
+            if machine.state=="recommand_song_by_album":
+                send_text_message(event.reply_token, "請輸入正確的專輯名稱！")
+                
+            
 
     return "OK"
 
