@@ -1,5 +1,7 @@
 # TOC Project 2020
+## 介紹
 
+根據輸入的歌名查專輯 推薦歌曲 周杰倫簡介
 [![Maintainability](https://api.codeclimate.com/v1/badges/dc7fa47fcd809b99d087/maintainability)](https://codeclimate.com/github/NCKU-CCS/TOC-Project-2020/maintainability)
 
 [![Known Vulnerabilities](https://snyk.io/test/github/NCKU-CCS/TOC-Project-2020/badge.svg)](https://snyk.io/test/github/NCKU-CCS/TOC-Project-2020)
@@ -71,7 +73,7 @@ Or You can use [servo](http://serveo.net/) to expose local servers to the intern
 
 
 ## Finite State Machine
-![fsm](./img/show-fsm.png)
+![fsm](fsm.png)
 
 ## Usage
 The initial state is set to `user`.
